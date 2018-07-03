@@ -4,6 +4,8 @@ In this lab you will create:
  - deployment running nginx
  - service for nginx called `web`
 
+You can also use PersistentVolumeClaim since default StorageClass is already created for you. Consider also using init containers.
+
 ## Scenario
 
 1. User replaces special value in `lab-3.yaml` with an url
