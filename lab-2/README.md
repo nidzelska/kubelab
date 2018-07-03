@@ -42,7 +42,7 @@ kubectl get pod -l role=client --output=jsonpath={.spec.containers[].resources.r
 
 kubectl exec -ti mysql-client -- git clone https://github.com/andrewscat/kubelab.git kubelab
 kubectl exec -ti mysql-client -- sh -c 'echo -n $(date +%s) > value.txt'
-kubectl exec -ti mysql-client -- sh -c 'value=$(cat   ); sed -i "s/RANDOM_VALUE/${value}/" kubelab/lab-2/script.sql'
+kubectl exec -ti mysql-client -- sh -c 'value=$(cat value.txt); sed -i "s/RANDOM_VALUE/${value}/" kubelab/lab-2/script.sql'
 kubectl exec -ti mysql-client -- sh -c 'mysql -u root -p$PASSWORD -h mysql < kubelab/lab-2/script.sql'
 kubectl exec -ti mysql-client -- sh -c 'value=$(cat value.txt); mysql -u root -p$PASSWORD -h mysql LAB -sN -r -e "SELECT kubeval FROM Kubelab" | grep $value'
 ```
