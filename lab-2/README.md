@@ -33,7 +33,6 @@ set -e
 kubectl create -f lab-2.yaml
 test $(kubectl get pods --no-headers mysql-client | wc -l) -eq 1
 test $(kubectl get pods --no-headers mysql-server | wc -l) -eq 1
-test $(kubectl get pods --no-headers mysql-server | wc -l) -eq 1
 
 kubectl get pod -l role=server --output=jsonpath={.spec.containers[].resources.requests.cpu}
 kubectl get pod -l role=server --output=jsonpath={.spec.containers[].resources.requests.memory}
