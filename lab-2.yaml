@@ -15,7 +15,7 @@ spec:
     - name: MYSQL_ROOT_PASSWORD
       valueFrom:
         secretKeyRef:
-          name: mysecret
+          name: mysqlsecret
           key: password  
     resources:
       requests:
@@ -23,10 +23,10 @@ spec:
         memory: 256Mi
 ---
 
-apiVersion: v1
 kind: Secret
+apiVersion: v1
 metadata:
-  name: mysecret
+  name: mysqlsecret
 type: Opaque
 data:
   password: UGFzc3dvckQ=
@@ -43,6 +43,7 @@ spec:
     role: server
    ports:
    - port: 3306
+     name: mysql-port
 
    
 --- 
@@ -64,7 +65,7 @@ spec:
     - name: PASSWORD
       valueFrom: 
           secretKeyRef:
-            name: mysecret
+            name: mysqlsecret
             key: password
     resources:
       requests:
