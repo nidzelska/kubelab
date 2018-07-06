@@ -1,0 +1,89 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-1-config
+data:
+  nginx.conf: |
+    server {
+    listen 8081;
+    root /usr/share/nginx/html;
+    location / {
+               }
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-2-config
+data:
+  nginx.conf: |
+    server {
+    listen 8082;
+    root /usr/share/nginx/html;
+    location / {
+               }
+    }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-1-web
+spec:
+  selector:
+    app: web-1
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8081
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-2-web
+spec:
+  selector:
+    app: web-2
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8082
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-1
+  labels:
+    app: web-1
+spec:
+  containers:
+  - name: nginx-curl
+    image: nidzelska/nginx-curl
+    ports:
+    - containerPort: 8081
+    volumeMounts:
+    - name: nginx-1-config
+      mountPath: /etc/nginx/conf.d
+  volumes:
+    - name: nginx-1-config
+      configMap:
+        name: nginx-1-config
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-2
+  labels:
+    app: web-2
+spec:
+  containers:
+  - name: nginx-curl
+    image: nidzelska/nginx-curl
+    ports:
+    - containerPort: 8082
+    volumeMounts:
+    - name: nginx-2-config
+      mountPath: /etc/nginx/conf.d
+  volumes:
+    - name: nginx-2-config
+      configMap:
+        name: nginx-2-config
