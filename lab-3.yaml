@@ -29,7 +29,7 @@ spec:
 
       initContainers:
       - name: initcont
-        image: nidzelska/curl
+        image: nidzelska/nginx-curl
         command: ['sh', '-c', 'curl MAIN_PAGE >> /usr/share/nginx/html/main.html']
         volumeMounts:
           - name: nginx1
