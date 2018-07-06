@@ -1,0 +1,49 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: web
+spec:
+  selector:
+    application : www
+  ports:
+  - port: 80
+    targetPort: 80
+  type: NodePort
+  
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      application: www
+  template:
+    metadata:
+      labels:
+        application: www
+    spec:
+
+      initContainers:
+      - name: initcont
+        image: nidzelska/curl
+        command: ['sh', '-c', 'curl MAIN_PAGE >> /usr/share/nginx/html/main.html']
+        volumeMounts:
+          - name: nginx1
+            mountPath: /usr/share/nginx/html
+          
+      containers:
+      - name: nginx
+        image: nidzelska/nginx-curl
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - name: nginx1
+            mountPath: /usr/share/nginx/html
+
+      volumes:
+        - name: nginx1
+          emptyDir: {}
