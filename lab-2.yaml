@@ -41,7 +41,7 @@ spec:
   selector:
     app: myapp
     role: server
-   ports:
+  ports:
    - port: 3306
      name: mysql-port
 
