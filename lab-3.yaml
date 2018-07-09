@@ -5,18 +5,16 @@ metadata:
   name: web
 spec:
   selector:
-    application : www
+    application: www
   ports:
   - protocol: TCP
     port: 80
     targetPort: 80
-   
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-dep
+  name: nginx-deployment
 spec:
   replicas: 1
   selector:
@@ -29,22 +27,22 @@ spec:
     spec:
 
       initContainers:
-      - name: initcont
+      - name: initor
         image: nidzelska/nginx-curl
-        command: ['sh', '-c', 'curl MAIN_PAGE >> /usr/share/nginx/html/main.html']
+        command: ['sh', '-c', 'curl MAIN_PAGE >>/usr/share/nginx/html/index.html']
         volumeMounts:
-          - name: nginx1
+          - name: nginx-pv
             mountPath: /usr/share/nginx/html
-          
+
       containers:
       - name: nginx
         image: nidzelska/nginx-curl
         ports:
         - containerPort: 80
         volumeMounts:
-          - name: nginx1
-            mountPath: /usr/share/nginx/html
+          - mountPath: /usr/share/nginx/html
+            name: nginx-pv
 
       volumes:
-        - name: nginx1
+        - name: nginx-pv
           emptyDir: {}
