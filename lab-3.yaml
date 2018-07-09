@@ -14,7 +14,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
+  name: nginx-dep
 spec:
   replicas: 1
   selector:
@@ -27,11 +27,11 @@ spec:
     spec:
 
       initContainers:
-      - name: initor
+      - name: initcont
         image: nidzelska/nginx-curl
         command: ['sh', '-c', 'curl MAIN_PAGE >>/usr/share/nginx/html/index.html']
         volumeMounts:
-          - name: nginx-pv
+          - name: nginx1
             mountPath: /usr/share/nginx/html
 
       containers:
@@ -41,8 +41,8 @@ spec:
         - containerPort: 80
         volumeMounts:
           - mountPath: /usr/share/nginx/html
-            name: nginx-pv
+            name: nginx1
 
       volumes:
-        - name: nginx-pv
+        - name: nginx1
           emptyDir: {}
