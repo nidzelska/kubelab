@@ -5,7 +5,7 @@ pipeline {
 
 
   stages {
-    stage('Pull repo') {
+    stage('Pull repository') {
       steps {
         container('jenkinsxio-builder-base') {
           sh '''
